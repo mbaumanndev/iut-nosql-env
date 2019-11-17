@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+  redis:
+    restart: 'no'
+    image: redislabs/redisearch:latest
+    command: --loglevel verbose
+
+  rcli:
+    restart: 'no'
+    image: redislabs/redisearch:latest
+    depends_on:
+      - redis
+    command: >
+      sh -c 'redis-cli -h redis '
+
+  mongo:
+    restart: 'no'
+    image: mongo:4.0.12
+#    volumes:
+#      - ./mongo-data:/data/db
+
+  mgcli:
+    restart: 'no'
+    image: mongo:4.0.12
+    depends_on:
+      - mongo
+    command: >
+      sh -c 'mongo --host mongo '
+
+  readis:
+    restart: 'no'
+    image: hollodotme/readis
+    ports:
+      - 8080:80
+    volumes:
+      - ./config:/code/config:ro
+    depends_on:
+      - redis
+
+  phpredisadmin:
+    restart: 'no'
+    image: erikdubbelboer/phpredisadmin
+    environment:
+      - REDIS_1_HOST=redis
+      - REDIS_1_PORT=6379
+    depends_on:
+      - redis
+    ports:
+      - 8081:80
+      
+  mongo-express:
+    restart: 'no'
+    image: mongo-express:0.49.0
+    ports:
+      - 8082:8081
+    depends_on:
+      - mongo
