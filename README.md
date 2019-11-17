@@ -15,7 +15,7 @@ docker-compose up -d
 ```
 
 Vous aurez alors accès à :
-- Une ligne de commande redis (`docker-compose run redis-cli`)
+- Une ligne de commande redis (`docker-compose run rcli`)
 - Une ligne de commande mongo (`docker-compose run mgcli`)
 - [Une IHM web pour redis (readis) sur le port 8080](http://localhost:8080)
 - [Une IHM web pour redis (phpredisadmin) sur le port 8081](http://localhost:8081)
